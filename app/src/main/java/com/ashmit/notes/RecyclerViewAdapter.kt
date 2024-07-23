@@ -58,9 +58,9 @@ class RecyclerViewAdapter(private var arraylist : ArrayList<NotesModel>) : Recyc
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val currentItem = arraylist[position]
         holder.title.text = currentItem.title
-        holder.content.text = getPreview(currentItem.content!! , 200)
+        holder.content.text = getPreview(currentItem.content!!)
     }
-    private fun getPreview(content :String , maxLength:Int) :String{
+    private fun getPreview(content :String , maxLength:Int = 200) :String{
         return if(content.length > maxLength){
             content.substring(0 , maxLength) + " ..."
         }else{

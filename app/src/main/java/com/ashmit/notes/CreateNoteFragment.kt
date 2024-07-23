@@ -40,6 +40,8 @@ class CreateNoteFragment : Fragment() {
         view = inflater.inflate(R.layout.fragment_create_note, container, false)
         fab = view.findViewById(R.id.fabCreateNote)
 
+
+
         fab.setOnClickListener{
             title  = view.findViewById<EditText?>(R.id.notesTitle).text.toString().trim()
             content = view.findViewById<EditText?>(R.id.notesContent).text.toString().trim()
