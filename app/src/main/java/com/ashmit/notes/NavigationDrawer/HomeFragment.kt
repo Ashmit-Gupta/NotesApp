@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ashmit.notes.CreateNoteFragment
@@ -76,17 +77,16 @@ class HomeFragment : Fragment() {
 
         val fab: FloatingActionButton = view.findViewById(R.id.fabAddItem)
         fab.setOnClickListener {
-            try {
                 parentFragmentManager.beginTransaction()
                     .replace(R.id.fragment_Container, CreateNoteFragment())
                     .addToBackStack(null)
                     .commit()
-            } catch (e: Exception) {
-                Toast.makeText(requireContext(), e.message, Toast.LENGTH_SHORT).show()
-            }
         }
+
         return view
     }
+
+//    add ondestroy
 
     private fun fetchNotes() {
         db.collection("user").document(userId).collection("notes").get()

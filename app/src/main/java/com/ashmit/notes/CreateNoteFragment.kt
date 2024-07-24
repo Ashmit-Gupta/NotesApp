@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
@@ -38,29 +39,32 @@ class CreateNoteFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_create_note, container, false)
-        fab = view.findViewById(R.id.fabCreateNote)
 
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                // Show an exit confirmation dialog
+                title  = view.findViewById<EditText?>(R.id.notesTitle).text.toString().trim()
+                content = view.findViewById<EditText?>(R.id.notesContent).text.toString().trim()
+                if(!check()){
+                    val notesHashMap = hashMapOf(
+                        "title" to title,
+                        "content" to content
+                    )
+                    val userid = FirebaseAuth.getInstance().currentUser!!.uid
+                    database.collection("user").document(userid).collection("notes").add(notesHashMap)
+                        .addOnSuccessListener {
+                            Toast.makeText(requireContext(), "Note Created Successfully", Toast.LENGTH_SHORT).show()
+                            parentFragmentManager.popBackStack()
 
-
-        fab.setOnClickListener{
-            title  = view.findViewById<EditText?>(R.id.notesTitle).text.toString().trim()
-            content = view.findViewById<EditText?>(R.id.notesContent).text.toString().trim()
-            if(!check()){
-                val notesHashMap = hashMapOf(
-                    "title" to title,
-                    "content" to content
-                )
-                val userid = FirebaseAuth.getInstance().currentUser!!.uid
-                database.collection("user").document(userid).collection("notes").add(notesHashMap)
-                    .addOnSuccessListener {
-                        Toast.makeText(requireContext(), "Note Created Successfully", Toast.LENGTH_SHORT).show()
-                        parentFragmentManager.popBackStack()
-
-                    }.addOnFailureListener{
-                        Toast.makeText(requireContext(), "Failed to add data ${it.message}", Toast.LENGTH_SHORT).show()
-                    }
+                        }.addOnFailureListener{
+                            Toast.makeText(requireContext(), "Failed to add data ${it.message}", Toast.LENGTH_SHORT).show()
+                        }
+                }else{
+                    fragmentManager?.popBackStack()
+                }
             }
         }
+        )
         return view
     }
 
