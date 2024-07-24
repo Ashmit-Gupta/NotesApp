@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -25,7 +26,6 @@ class UpdateNoteFragment : Fragment() {
     }
 
 
-    //TODO fab on click not working fix it !!
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -44,10 +44,15 @@ class UpdateNoteFragment : Fragment() {
         noteContentEditText.setText(content!!.trim())
 
         // Set up save button
-        view.findViewById<FloatingActionButton>(R.id.fabUpdateNote).setOnClickListener {
-            Log.d("DEBUG" , "In the FAB click !!")
-            updateNote()
-        }
+         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,object :
+            OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                Log.d("DEBUG" , "In the FAB click !!")
+                updateNote()
+            }
+        })
+//            Log.d("DEBUG", "In the FAB click !!")
+//            updateNote()
 
         return view
     }

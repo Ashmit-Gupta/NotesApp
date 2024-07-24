@@ -79,9 +79,10 @@ class MainActivity : AppCompatActivity() , NavigationView.OnNavigationItemSelect
         })
 
     }
+
     //toggle bar
     private fun replaceFragment (fragment: Fragment , boolean: Boolean){
-        //as we have to on add the first frag that is the home frag to the back stack so we have taken ab ool var an passed false if for the home screen frag and true for all other frag as we ha ve to add them to the backstack
+        //as we have to on add the first frag that is the home frag to the back stack so we have taken a bool var an passed false if for the home screen frag and true for all other frag as we ha ve to add them to the backstack
         val fragManager = supportFragmentManager.beginTransaction().replace(R.id.fragment_Container , fragment)
         if(boolean){
             fragManager.addToBackStack(null)
